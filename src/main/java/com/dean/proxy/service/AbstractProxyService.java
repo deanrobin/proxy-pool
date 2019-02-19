@@ -40,6 +40,8 @@ public abstract class AbstractProxyService implements ProxyService {
                 }
                 proxy.setTimestamp(System.currentTimeMillis());
                 log.info("proxy insert into DB:" + proxy.getInternalId());
+
+                proxy.setType(proxy.getType().toUpperCase());
                 proxyMapper.insert(proxy);
             }
         } catch (Exception e) {
