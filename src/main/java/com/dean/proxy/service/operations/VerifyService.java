@@ -223,8 +223,12 @@ public class VerifyService {
     }
 
     private boolean updateProxy(Proxy proxy, Long timestamp, Integer status) {
+        Integer offset = 0;
+        if (proxy.getCountry() == null || !proxy.getCountry().equals("中国")) {
+            offset = 5;
+        }
         boolean result = httpClient.verifyProxy(
-            false, defaultUrl, proxy.getIp(), proxy.getPort());
+            false, defaultUrl, proxy.getIp(), proxy.getPort(), offset);
         log.info("proxy verify is " + result + " ,proxy:" + proxy.getInternalId());
         if (result) {
             proxy.setStatus(StatusEnum.VERIFIED.getCode());

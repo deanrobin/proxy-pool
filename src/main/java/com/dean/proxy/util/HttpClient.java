@@ -36,6 +36,9 @@ public class HttpClient {
     @Value("${crawl.https.convert}")
     private boolean convertHttp;
 
+    @Value("${verify.client.timeout}")
+    int timeout;
+
     private static Logger log = LoggerFactory.getLogger(HttpClient.class);
 
     public static Map<String, String> map = new HashMap<>();
@@ -159,7 +162,7 @@ public class HttpClient {
         return "";
     }
 
-    public boolean verifyProxy(boolean convertHttp, String url, String proxyIp, Integer proxyPort) {
+    public boolean verifyProxy(boolean convertHttp, String url, String proxyIp, Integer proxyPort, Integer timeoutOffset) {
         boolean result = false;
         if (convertHttp) {
             url = convertHttp(url);
@@ -172,9 +175,9 @@ public class HttpClient {
         try {
             OkHttpClient.Builder builder = new OkHttpClient.Builder();
             //设置连接超时时间  --15 Ms
-            builder.connectTimeout(30, TimeUnit.SECONDS);
-            builder.readTimeout(30, TimeUnit.SECONDS);
-            builder.writeTimeout(30, TimeUnit.SECONDS);
+            builder.connectTimeout(timeout + timeoutOffset, TimeUnit.SECONDS);
+            builder.readTimeout(timeout + timeoutOffset, TimeUnit.SECONDS);
+            builder.writeTimeout(timeout + timeoutOffset, TimeUnit.SECONDS);
 
             ////设置代理,需要替换
             if (StringUtils.isNotEmpty(proxyIp) && proxyPort != null) {
@@ -226,6 +229,10 @@ public class HttpClient {
             }
         }
         return result;
+    }
+
+    public boolean verifyProxy(boolean convertHttp, String url, String proxyIp, Integer proxyPort) {
+        return verifyProxy(convertHttp, url, proxyIp, proxyPort, 0);
     }
 
     // 此方法日后需要重新设计，需要加锁
