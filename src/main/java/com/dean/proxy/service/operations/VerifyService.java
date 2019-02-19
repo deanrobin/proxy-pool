@@ -27,6 +27,7 @@ import org.springframework.stereotype.Service;
 @Service
 @Slf4j
 public class VerifyService {
+
     @Autowired
     ProxyMapper proxyMapper;
     @Autowired
@@ -69,8 +70,9 @@ public class VerifyService {
         CountDownLatch countDownLatch = new CountDownLatch(list.size());
         ThreadFactory namedThreadFactory = new ThreadFactoryBuilder()
             .setNameFormat("initialVerify-pool-%d").build();
+        // 线程池 加大，尽快完成验证
         ThreadPoolExecutor threadPoolExecutor =
-            new ThreadPoolExecutor(corePoolSize, maxPoolSize, 60,
+            new ThreadPoolExecutor(corePoolSize + 10, maxPoolSize + 10, 60,
                 TimeUnit.SECONDS, new ArrayBlockingQueue(list.size()), namedThreadFactory);
         for (Proxy proxy : list) {
 
