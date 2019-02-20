@@ -27,8 +27,11 @@ public interface ProxyMapper {
     //@Select("select * from proxy where status = 1")
     //List<Proxy> getAllProxy();
 
-    @Select("select * from proxy where internal_id = #{internalId}")
-    Proxy getByInternal(@Param("internalId") String internalId);
+    @Select("select * from proxy where `internal_id`=#{internalId} "
+        + "UNION ALL "
+        + "select * from proxy where ip=#{ip} and port=#{port}")
+    Proxy getByTwoIndex(@Param("internalId") String internalId, @Param("ip") String ip,
+                        @Param("port") Integer port);
 
     @Select({"select * from proxy where status=0 order by id asc limit 0, 10"})
     List<Proxy> getNeedVerify();
