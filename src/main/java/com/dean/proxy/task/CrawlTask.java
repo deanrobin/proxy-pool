@@ -31,7 +31,7 @@ public class CrawlTask {
     @Autowired
     ProxyPoolContext context;
 
-    @Scheduled(fixedDelay = 10 * 60 * 1000)
+    //@Scheduled(fixedDelay = 10 * 60 * 1000)
     public void crawl() {
         log.info("start crawl task, threadPool core and max is:" + corePoolSize + " ," + maxPoolSize);
 
