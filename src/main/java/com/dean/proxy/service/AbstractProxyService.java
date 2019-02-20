@@ -16,7 +16,7 @@ import org.springframework.stereotype.Service;
  */
 @Service
 @Slf4j
-public abstract class AbstractProxyService implements ProxyService {
+public abstract class AbstractProxyService implements IProxyService {
 
     @Autowired
     HttpClient httpClient;

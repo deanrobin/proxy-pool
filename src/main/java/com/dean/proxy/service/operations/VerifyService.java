@@ -130,7 +130,7 @@ public class VerifyService {
 
             Verification verification = verificationMapper.getSuccessByInternalId(proxy.getInternalId());
             verification.setUnavailableTime(timestamp);
-            verification.setDuration(verification.getVerifyAvailableTime() - timestamp);
+            verification.setDuration(timestamp - verification.getVerifyAvailableTime());
             verification.setUse(false);
 
             verificationMapper.update(verification);

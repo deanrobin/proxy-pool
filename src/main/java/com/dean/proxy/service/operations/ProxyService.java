@@ -23,8 +23,16 @@ public class ProxyService {
     final static String SORT_KEY = "id";
     final static Integer COUNT = 20;
 
-    public Integer count() {
+    public Integer usableCount() {
         return proxyMapper.successCount();
+    }
+
+    public Integer count() {
+        return proxyMapper.count();
+    }
+
+    public Integer unverifiedCount() {
+        return proxyMapper.unverifiedCount();
     }
 
     public List<ProxyRes> getList(String type, String source, String country) {

@@ -62,4 +62,11 @@ public interface ProxyMapper {
 
     @Select({"select count(*) from proxy where status=1"})
     Integer successCount();
+
+    @Select({"select count(*) from proxy"})
+    Integer count();
+
+    @Select({"select count(*) from proxy where status=0"})
+    Integer unverifiedCount();
+
 }

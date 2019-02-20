@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 /**
  * @author dean
  */
-@RequestMapping(value = "/v1")
+@RequestMapping(value = "/v1/proxy")
 @Controller
 public class V1Controller {
 
@@ -29,7 +29,7 @@ public class V1Controller {
     @ResponseBody
     public Integer count() {
         //return pcp.size();
-        return proxyService.count();
+        return proxyService.usableCount();
     }
 
     @RequestMapping("/randomGetOne")
