@@ -67,13 +67,16 @@ public class VerifyService {
             return;
         }
 
+        log.info("initialValidation list size" + list.size());
         CountDownLatch countDownLatch = new CountDownLatch(list.size());
         ThreadFactory namedThreadFactory = new ThreadFactoryBuilder()
-            .setNameFormat("initialVerify-pool-%d").build();
+            .setNameFormat("verifyF-pool-%d").build();
         // 线程池 加大，尽快完成验证
         ThreadPoolExecutor threadPoolExecutor =
             new ThreadPoolExecutor(corePoolSize + 10, maxPoolSize + 10, 60,
                 TimeUnit.SECONDS, new ArrayBlockingQueue(list.size()), namedThreadFactory);
+
+        log.info("begin initialValidation...");
         for (Proxy proxy : list) {
 
             Runnable task = () -> {
@@ -95,6 +98,8 @@ public class VerifyService {
             };
             threadPoolExecutor.execute(task);
         }
+
+        log.info("verify initial task over." + System.currentTimeMillis());
     }
 
     public void verifySuccessAgain() {
