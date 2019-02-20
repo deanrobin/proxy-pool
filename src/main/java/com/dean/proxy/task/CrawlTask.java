@@ -9,7 +9,7 @@ import java.util.concurrent.TimeUnit;
 
 import com.dean.proxy.ProxyPoolContext;
 import com.dean.proxy.service.AbstractProxyService;
-import com.dean.proxy.service.ProxyService;
+import com.dean.proxy.service.IProxyService;
 import com.google.common.util.concurrent.ThreadFactoryBuilder;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,7 +35,7 @@ public class CrawlTask {
     public void crawl() {
         log.info("start crawl task, threadPool core and max is:" + corePoolSize + " ," + maxPoolSize);
 
-        Map<String, ProxyService> map = context.getServiceMap();
+        Map<String, IProxyService> map = context.getServiceMap();
 
         CountDownLatch countDownLatch = new CountDownLatch(map.size());
         ThreadFactory namedThreadFactory = new ThreadFactoryBuilder()
@@ -44,7 +44,7 @@ public class CrawlTask {
             new ThreadPoolExecutor(corePoolSize, maxPoolSize, 60,
                 TimeUnit.SECONDS, new ArrayBlockingQueue(map.size()), namedThreadFactory);
 
-        for (Map.Entry<String, ProxyService> entry : map.entrySet()) {
+        for (Map.Entry<String, IProxyService> entry : map.entrySet()) {
             AbstractProxyService proxyService = (AbstractProxyService)entry.getValue();
 
             Runnable task = () -> {

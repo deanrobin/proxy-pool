@@ -2,7 +2,7 @@ package com.dean.proxy;
 
 import java.util.Map;
 
-import com.dean.proxy.service.ProxyService;
+import com.dean.proxy.service.IProxyService;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.context.ApplicationContext;
@@ -15,13 +15,13 @@ import org.springframework.stereotype.Service;
 @Service
 public class ProxyPoolContext implements ApplicationContextAware, InitializingBean {
 
-    Map<String, ProxyService> serviceMap;
+    Map<String, IProxyService> serviceMap;
 
     ApplicationContext applicationContext;
 
     @Override
     public void afterPropertiesSet() throws Exception {
-        serviceMap = applicationContext.getBeansOfType(ProxyService.class);
+        serviceMap = applicationContext.getBeansOfType(IProxyService.class);
     }
 
     @Override
@@ -29,8 +29,8 @@ public class ProxyPoolContext implements ApplicationContextAware, InitializingBe
         this.applicationContext = applicationContext;
     }
 
-    public ProxyService getInstance(String type) {
-        for (Map.Entry<String, ProxyService> entry : serviceMap.entrySet()) {
+    public IProxyService getInstance(String type) {
+        for (Map.Entry<String, IProxyService> entry : serviceMap.entrySet()) {
             if (entry.getValue().getProxyId().equals(type)) {
                 return entry.getValue();
             }
@@ -38,7 +38,7 @@ public class ProxyPoolContext implements ApplicationContextAware, InitializingBe
         return null;
     }
 
-    public Map<String, ProxyService> getServiceMap() {
+    public Map<String, IProxyService> getServiceMap() {
         return serviceMap;
     }
 }

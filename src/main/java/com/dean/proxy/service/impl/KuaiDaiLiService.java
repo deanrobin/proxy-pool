@@ -7,7 +7,6 @@ import java.util.List;
 import com.dean.proxy.bean.Proxy;
 import com.dean.proxy.constant.AnonymityEnum;
 import com.dean.proxy.service.AbstractProxyService;
-import com.dean.proxy.service.ProxyService;
 import com.dean.proxy.util.IPUtil;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
