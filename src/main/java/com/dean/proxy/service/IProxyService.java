@@ -7,7 +7,7 @@ import com.dean.proxy.bean.Proxy;
 /**
  * @author dean
  */
-public interface ProxyService {
+public interface IProxyService {
 
     String getURL();
 
