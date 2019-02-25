@@ -48,8 +48,8 @@ public class ProxyService {
         return prList;
     }
 
-    public List<ProxyRes> getLast(Integer count) {
-        List<Proxy> list = proxyMapper.query(null, null, null, "validate_time", count);
+    public List<ProxyRes> getLast(String type, String country, Integer count) {
+        List<Proxy> list = proxyMapper.query(country, null, type, "validate_time", count);
         List<ProxyRes> prList = new ArrayList<>(list.size());
 
         for (Proxy p : list) {

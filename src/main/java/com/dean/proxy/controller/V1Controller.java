@@ -53,8 +53,10 @@ public class V1Controller {
 
     @RequestMapping("/getLastOne")
     @ResponseBody
-    public List<ProxyRes> getLastOne(@RequestParam(value = "count", required = false, defaultValue = "1") Integer count) {
+    public List<ProxyRes> getLastOne(@RequestParam(value = "type", required = false) String type,
+                                     @RequestParam(value = "country", required = false) String country,
+                                     @RequestParam(value = "count", required = false, defaultValue = "1") Integer count) {
 
-        return proxyService.getLast(count);
+        return proxyService.getLast(type, country, count);
     }
 }

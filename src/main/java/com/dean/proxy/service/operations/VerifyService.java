@@ -103,6 +103,7 @@ public class VerifyService {
     }
 
     public void verifySuccessAgain() {
+        log.info("verify success task begin:" + System.currentTimeMillis());
         List<Proxy> list = proxyMapper.getSuccessVerify();
 
         if (list == null) {
@@ -135,10 +136,13 @@ public class VerifyService {
 
             verificationMapper.update(verification);
         }
+
+        log.info("verify success task end:" + System.currentTimeMillis());
     }
 
 
     public void verifyNeedVerifyAgain() {
+        log.info("verify need verify task begin:" + System.currentTimeMillis());
         List<Proxy> list = proxyMapper.getNeedVerifyAgain();
 
         if (list == null) {
@@ -171,9 +175,12 @@ public class VerifyService {
             Verification verification = new Verification(proxy.getInternalId(), true, timestamp);
             verificationMapper.insert(verification);
         }
+
+        log.info("verify need verify task end:" + System.currentTimeMillis());
     }
 
     public void verifyUnavailable() {
+        log.info("verify unavailable begin:" + System.currentTimeMillis());
         List<Proxy> list = proxyMapper.getUnavailableVerify();
 
         if (list == null) {
@@ -218,6 +225,7 @@ public class VerifyService {
             Verification verification = new Verification(proxy.getInternalId(), true, timestamp);
             verificationMapper.insert(verification);
         }
+        log.info("verify unavailable end:" + System.currentTimeMillis());
     }
 
 
