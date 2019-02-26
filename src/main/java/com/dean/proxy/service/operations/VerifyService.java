@@ -125,7 +125,12 @@ public class VerifyService {
             new ThreadPoolExecutor(corePoolSize + 20, maxPoolSize + 20, 60,
                 TimeUnit.SECONDS, new ArrayBlockingQueue(list.size()), namedThreadFactory);
 
+        Long now = System.currentTimeMillis();
         for (Proxy proxy : list) {
+            // 超过5分钟再验证。
+            if (now - proxy.getValidateTime() <= 5 * ONE_MIN) {
+                continue;
+            }
 
             Runnable task = () -> {
                 try {

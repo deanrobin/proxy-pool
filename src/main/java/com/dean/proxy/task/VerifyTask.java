@@ -30,7 +30,7 @@ public class VerifyTask {
     /**
      * 验证可用的代理 是否正常可用
      */
-    @Scheduled(fixedDelay = 60 * 1000)
+    @Scheduled(fixedDelay = 30 * 1000)
     public void verifySuccessAgain() {
         verifyService.verifySuccessAgain();
     }
