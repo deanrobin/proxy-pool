@@ -67,16 +67,16 @@ public class VerifyService {
             return;
         }
 
-        log.info("initialValidation list size" + list.size());
+        //log.info("initialValidation list size" + list.size());
         CountDownLatch countDownLatch = new CountDownLatch(list.size());
         ThreadFactory namedThreadFactory = new ThreadFactoryBuilder()
             .setNameFormat("verifyF-pool-%d").build();
         // 线程池 加大，尽快完成验证
         ThreadPoolExecutor threadPoolExecutor =
-            new ThreadPoolExecutor(corePoolSize + 10, maxPoolSize + 10, 60,
+            new ThreadPoolExecutor(corePoolSize, maxPoolSize, 60,
                 TimeUnit.SECONDS, new ArrayBlockingQueue(list.size()), namedThreadFactory);
 
-        log.info("begin initialValidation...");
+        //log.info("begin initialValidation...");
         for (Proxy proxy : list) {
 
             Runnable task = () -> {
@@ -87,8 +87,9 @@ public class VerifyService {
                     if (!result) {
                         log.error("this proxy record update error: " + JSON.toJSON(proxy));
                     } else {
-                        insertVerifiaction(proxy.getInternalId(), timestamp,
-                            proxy.getStatus() == StatusEnum.VERIFIED.getCode());
+                        // TODO
+                        //insertVerifiaction(proxy.getInternalId(), timestamp,
+                        //    proxy.getStatus() == StatusEnum.VERIFIED.getCode());
                     }
                 }catch (Exception e){
                     log.error("initialValidation exception " + JSON.toJSON(proxy), e);
@@ -116,25 +117,39 @@ public class VerifyService {
             return;
         }
 
+        CountDownLatch countDownLatch = new CountDownLatch(list.size());
+        ThreadFactory namedThreadFactory = new ThreadFactoryBuilder()
+            .setNameFormat("verifyF-pool-%d").build();
+        // 线程池 加大，尽快完成验证
+        ThreadPoolExecutor threadPoolExecutor =
+            new ThreadPoolExecutor(corePoolSize, maxPoolSize, 60,
+                TimeUnit.SECONDS, new ArrayBlockingQueue(list.size()), namedThreadFactory);
+
         for (Proxy proxy : list) {
-            Long timestamp = System.currentTimeMillis();
-            boolean result = updateProxy(proxy, timestamp);
 
-            if (!result) {
-                log.error("this proxy update error:" + JSON.toJSON(proxy));
-                continue;
-            }
+            Runnable task = () -> {
+                try {
+                    Long timestamp = System.currentTimeMillis();
+                    boolean result = updateProxy(proxy, timestamp);
 
-            if (proxy.getStatus() == StatusEnum.VERIFIED.getCode()) {
-                continue;
-            }
-
-            Verification verification = verificationMapper.getSuccessByInternalId(proxy.getInternalId());
-            verification.setUnavailableTime(timestamp);
-            verification.setDuration(timestamp - verification.getVerifyAvailableTime());
-            verification.setUse(false);
-
-            verificationMapper.update(verification);
+                    if (!result) {
+                        log.error("this proxy update error:" + JSON.toJSON(proxy));
+                    } else {
+                        // TODO
+                        //Verification verification = verificationMapper.getSuccessByInternalId(proxy.getInternalId());
+                        //verification.setUnavailableTime(timestamp);
+                        //verification.setDuration(timestamp - verification.getVerifyAvailableTime());
+                        //verification.setUse(false);
+                        //
+                        //verificationMapper.update(verification);
+                    }
+                } catch (Exception e) {
+                    log.error("verifySuccessAgain error", proxy.getInternalId());
+                } finally {
+                    countDownLatch.countDown();
+                }
+            };
+            threadPoolExecutor.execute(task);
         }
 
         log.info("verify success task end:" + System.currentTimeMillis());
@@ -172,8 +187,9 @@ public class VerifyService {
                 continue;
             }
 
-            Verification verification = new Verification(proxy.getInternalId(), true, timestamp);
-            verificationMapper.insert(verification);
+            // TODO
+            //Verification verification = new Verification(proxy.getInternalId(), true, timestamp);
+            //verificationMapper.insert(verification);
         }
 
         log.info("verify need verify task end:" + System.currentTimeMillis());
@@ -222,8 +238,9 @@ public class VerifyService {
                 continue;
             }
 
-            Verification verification = new Verification(proxy.getInternalId(), true, timestamp);
-            verificationMapper.insert(verification);
+            // TODO
+            //Verification verification = new Verification(proxy.getInternalId(), true, timestamp);
+            //verificationMapper.insert(verification);
         }
         log.info("verify unavailable end:" + System.currentTimeMillis());
     }

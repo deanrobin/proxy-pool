@@ -36,7 +36,7 @@ public interface ProxyMapper {
     @Select({"select * from proxy where status=0 order by id asc limit 0, 10"})
     List<Proxy> getNeedVerify();
 
-    @Select({"select * from proxy where status=1 order by id asc"})
+    @Select({"select * from proxy where status=1 order by validate_time asc limit 20"})
     List<Proxy> getSuccessVerify();
 
     @Select({"select * from proxy where status=10 ORDER BY RAND() LIMIT 20"})
