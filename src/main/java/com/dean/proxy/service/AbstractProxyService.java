@@ -33,16 +33,21 @@ public abstract class AbstractProxyService implements IProxyService {
             List<Proxy> list = reptileProxy(html);
 
             for (Proxy proxy : list) {
-                Proxy dbProxy = proxyMapper.getByTwoIndex(proxy.getInternalId(), proxy.getIp(), proxy.getPort());
-                if (dbProxy != null) {
-                    log.info("this proxy is in DB:" + dbProxy.getInternalId());
-                    continue;
-                }
-                proxy.setTimestamp(System.currentTimeMillis());
-                log.info("proxy insert into DB:" + proxy.getInternalId());
+                try {
+                    Proxy dbProxy = proxyMapper.getByTwoIndex(proxy.getInternalId(), proxy.getIp(), proxy.getPort());
+                    if (dbProxy != null) {
+                        log.info("this proxy is in DB:" + dbProxy.getInternalId());
+                        continue;
+                    }
+                    proxy.setTimestamp(System.currentTimeMillis());
+                    log.info("proxy insert into DB:" + proxy.getInternalId());
 
-                proxy.setType(proxy.getType().toUpperCase());
-                proxyMapper.insert(proxy);
+                    proxy.setType(proxy.getType().toUpperCase());
+                    proxyMapper.insert(proxy);
+                } catch (Exception e) {
+                    log.error("proxy getTwoIndex error:" + proxy.getInternalId());
+                }
+
             }
         } catch (Exception e) {
             log.error("proxy service have error:" + url, e);
