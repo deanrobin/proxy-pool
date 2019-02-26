@@ -122,7 +122,7 @@ public class VerifyService {
             .setNameFormat("verifyF-pool-%d").build();
         // 线程池 加大，尽快完成验证
         ThreadPoolExecutor threadPoolExecutor =
-            new ThreadPoolExecutor(corePoolSize, maxPoolSize, 60,
+            new ThreadPoolExecutor(corePoolSize + 20, maxPoolSize + 20, 60,
                 TimeUnit.SECONDS, new ArrayBlockingQueue(list.size()), namedThreadFactory);
 
         for (Proxy proxy : list) {
