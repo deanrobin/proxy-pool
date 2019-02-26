@@ -1,6 +1,7 @@
 package com.dean.proxy.util;
 
 import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.InetSocketAddress;
@@ -12,6 +13,7 @@ import java.util.Random;
 import java.util.concurrent.TimeUnit;
 
 import okhttp3.Headers;
+import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
@@ -103,7 +105,9 @@ public class HttpClient {
         Response execute = null;
         ResponseBody body = null;
         try {
-            OkHttpClient.Builder builder = new OkHttpClient.Builder();
+            OkHttpClient.Builder builder =
+                new OkHttpClient.Builder()
+                    .addInterceptor(new NetInterceptor());
             //设置连接超时时间  --15 Ms
             builder.connectTimeout(30, TimeUnit.SECONDS);
             builder.readTimeout(30, TimeUnit.SECONDS);
@@ -133,16 +137,16 @@ public class HttpClient {
             //webResult.setResult(body.string());
             //webResult.setCode(200);
             //execute.close();
-        } catch (java.net.SocketTimeoutException ste) {
+        } catch (java.net.SocketTimeoutException | java.net.SocketException e) {
             //webResult.setCode(-1);
             log.info("this url socket Time out:" + url);
         } catch (java.net.UnknownHostException e) {
             //webResult.setCode(-2);
             log.info("this url unknow host:" + url);
-        } catch (java.net.SocketException e) {
-            log.info("this url socketException:" + url);
+        } catch (java.io.IOException e) {
+            log.info("this url have IO exception:" + url);
         } catch (Exception e) {
-            log.error("this url error -->" + url, e);
+            log.error("this url error -->" + url);
         } finally {
             try {
                 if (body != null) {
@@ -173,7 +177,10 @@ public class HttpClient {
         Response execute = null;
         ResponseBody body = null;
         try {
-            OkHttpClient.Builder builder = new OkHttpClient.Builder();
+            OkHttpClient.Builder builder =
+                new OkHttpClient.Builder()
+                    // https://www.jianshu.com/p/8753188b315c
+                    .addNetworkInterceptor(new NetInterceptor());
             //设置连接超时时间  --15 Ms
             builder.connectTimeout(timeout + timeoutOffset, TimeUnit.SECONDS);
             builder.readTimeout(timeout + timeoutOffset, TimeUnit.SECONDS);
@@ -206,14 +213,14 @@ public class HttpClient {
             //webResult.setResult(body.string());
             //webResult.setCode(200);
             //execute.close();
-        } catch (java.net.SocketTimeoutException ste) {
+        } catch (java.net.SocketTimeoutException | java.net.SocketException e) {
             //webResult.setCode(-1);
             log.info("this url socket Time out:" + url);
         } catch (java.net.UnknownHostException e) {
             //webResult.setCode(-2);
             log.info("this url unknow host:" + url);
-        } catch (java.net.ConnectException e) {
-            log.info("this url connect failed: " + url);
+        } catch (java.io.IOException e) {
+            log.info("this url have IO exception: " + url);
         } catch (Exception e) {
             log.error("this url error -->" + url, e);
         } finally {
@@ -269,4 +276,17 @@ public class HttpClient {
         url = "http" + url.substring(5);
         return url;
     }
+
+
+    class NetInterceptor implements Interceptor{
+        @Override
+        public Response intercept(Chain chain)throws IOException {
+            Request request = chain.request().newBuilder()
+                .addHeader("Connection","close")
+                .build();
+            return chain.proceed(request);
+        }
+    }
+
+
 }
