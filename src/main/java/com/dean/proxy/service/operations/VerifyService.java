@@ -70,7 +70,7 @@ public class VerifyService {
         //log.info("initialValidation list size" + list.size());
         CountDownLatch countDownLatch = new CountDownLatch(list.size());
         ThreadFactory namedThreadFactory = new ThreadFactoryBuilder()
-            .setNameFormat("verifyF-pool-%d").build();
+            .setNameFormat("verifyF1-pool-%d").build();
         // 线程池 加大，尽快完成验证
         ThreadPoolExecutor threadPoolExecutor =
             new ThreadPoolExecutor(corePoolSize, maxPoolSize, 60,
@@ -119,7 +119,7 @@ public class VerifyService {
 
         CountDownLatch countDownLatch = new CountDownLatch(list.size());
         ThreadFactory namedThreadFactory = new ThreadFactoryBuilder()
-            .setNameFormat("verifyF-pool-%d").build();
+            .setNameFormat("verifySu-pool-%d").build();
         // 线程池 加大，尽快完成验证
         ThreadPoolExecutor threadPoolExecutor =
             new ThreadPoolExecutor(corePoolSize + 20, maxPoolSize + 20, 60,
