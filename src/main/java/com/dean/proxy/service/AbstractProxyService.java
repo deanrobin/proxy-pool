@@ -34,9 +34,9 @@ public abstract class AbstractProxyService implements IProxyService {
 
             for (Proxy proxy : list) {
                 try {
-                    Proxy dbProxy = proxyMapper.getByTwoIndex(proxy.getInternalId(), proxy.getIp(), proxy.getPort());
-                    if (dbProxy != null) {
-                        log.info("this proxy is in DB:" + dbProxy.getInternalId());
+                    List<Proxy> dbProxy = proxyMapper.getByTwoIndex(proxy.getInternalId(), proxy.getIp(), proxy.getPort());
+                    if (dbProxy != null && dbProxy.size() > 0) {
+                        log.info("this proxy is in DB:" + dbProxy.get(0).getInternalId());
                         continue;
                     }
                     proxy.setTimestamp(System.currentTimeMillis());

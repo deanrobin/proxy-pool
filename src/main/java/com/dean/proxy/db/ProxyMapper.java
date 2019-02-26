@@ -27,10 +27,17 @@ public interface ProxyMapper {
     //@Select("select * from proxy where status = 1")
     //List<Proxy> getAllProxy();
 
+    /*
+     UNION 查询去掉重复的
+     但是
+     UNION ALL 查询效率 比 UNION高
+     UNION ALL limit 1的操作 速度略逊于UNION ALL（自测)
+     */
+
     @Select("select * from proxy where `internal_id`=#{internalId} "
         + "UNION ALL "
         + "select * from proxy where ip=#{ip} and port=#{port}")
-    Proxy getByTwoIndex(@Param("internalId") String internalId, @Param("ip") String ip,
+    List<Proxy> getByTwoIndex(@Param("internalId") String internalId, @Param("ip") String ip,
                         @Param("port") Integer port);
 
     @Select({"select * from proxy where status=0 order by id asc limit 0, 10"})
