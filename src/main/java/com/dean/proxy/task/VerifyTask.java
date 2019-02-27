@@ -29,17 +29,20 @@ public class VerifyTask {
 
     /**
      * 验证可用的代理 是否正常可用
+     * status=1
      */
     @Scheduled(fixedDelay = 30 * 1000)
     public void verifySuccessAgain() {
         verifyService.verifySuccessAgain();
     }
 
+    // status=10
     @Scheduled(fixedDelay = 60 * 1000)
     public void verifyNeedAgain() {
         verifyService.verifyNeedVerifyAgain();
     }
 
+    // status=12
     @Scheduled(fixedDelay = 5 * 60 * 1000)
     public void verifyUnavailable() {
         verifyService.verifyUnavailable();
