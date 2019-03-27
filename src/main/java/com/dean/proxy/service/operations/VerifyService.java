@@ -100,6 +100,7 @@ public class VerifyService {
             threadPoolExecutor.execute(task);
         }
 
+        threadPoolExecutor.shutdown();
         log.info("verify initial task over." + System.currentTimeMillis());
     }
 
@@ -157,6 +158,7 @@ public class VerifyService {
             threadPoolExecutor.execute(task);
         }
 
+        threadPoolExecutor.shutdown();
         log.info("verify success task end:" + System.currentTimeMillis());
     }
 

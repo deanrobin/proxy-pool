@@ -25,23 +25,24 @@ public class V1Controller {
     ProxyService proxyService;
 
 
-    @RequestMapping("/count")
+    @RequestMapping("/"
+        + "'")
     @ResponseBody
     public Integer count() {
         //return pcp.size();
         return proxyService.usableCount();
     }
 
-    @RequestMapping("/randomGetOne")
-    @ResponseBody
-    public ProxyRes randomGetOne() {
-        Proxy proxy = pcp.randomGetProxy();
-        if (proxy == null) {
-            return new ProxyRes();
-        }
-        Integer number = pcp.selectByInternalId(proxy.getInternalId());
-        return ProxyRes.transform(proxy, number);
-    }
+    //@RequestMapping("/randomGetOne")
+    //@ResponseBody
+    //public ProxyRes randomGetOne() {
+    //    Proxy proxy = pcp.randomGetProxy();
+    //    if (proxy == null) {
+    //        return new ProxyRes();
+    //    }
+    //    Integer number = pcp.selectByInternalId(proxy.getInternalId());
+    //    return ProxyRes.transform(proxy, number);
+    //}
 
     @RequestMapping("/getList")
     @ResponseBody

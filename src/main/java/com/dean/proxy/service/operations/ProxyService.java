@@ -40,7 +40,8 @@ public class ProxyService {
         List<ProxyRes> prList = new ArrayList<>(list.size());
 
         for (Proxy p : list) {
-            Integer number = proxyCachePool.selectByInternalId(p.getInternalId());
+            Integer number = 0;
+                //proxyCachePool.selectByInternalId(p.getInternalId());
             ProxyRes res = ProxyRes.transform(p, number);
             prList.add(res);
         }
@@ -53,7 +54,8 @@ public class ProxyService {
         List<ProxyRes> prList = new ArrayList<>(list.size());
 
         for (Proxy p : list) {
-            Integer number = proxyCachePool.selectByInternalId(p.getInternalId());
+            Integer number = 0;
+                //proxyCachePool.selectByInternalId(p.getInternalId());
             ProxyRes res = ProxyRes.transform(p, number);
             prList.add(res);
         }
