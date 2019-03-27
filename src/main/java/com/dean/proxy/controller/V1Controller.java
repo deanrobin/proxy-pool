@@ -25,8 +25,7 @@ public class V1Controller {
     ProxyService proxyService;
 
 
-    @RequestMapping("/"
-        + "'")
+    @RequestMapping("/count")
     @ResponseBody
     public Integer count() {
         //return pcp.size();
