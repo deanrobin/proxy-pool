@@ -32,7 +32,7 @@ public class ProxyListTest {
 
     @Test
     public void testHtml() {
-        AbstractProxyService kuaiDaiLiService = (AbstractProxyService)context.getInstance("XCT");
+        AbstractProxyService kuaiDaiLiService = (AbstractProxyService)context.getInstance("6BJ");
         kuaiDaiLiService.reptileProxy();
     }
 

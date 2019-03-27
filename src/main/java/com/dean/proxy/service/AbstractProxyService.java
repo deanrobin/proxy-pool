@@ -45,7 +45,8 @@ public abstract class AbstractProxyService implements IProxyService {
                     proxy.setType(proxy.getType().toUpperCase());
                     proxyMapper.insert(proxy);
                 } catch (Exception e) {
-                    log.error("proxy getTwoIndex error:" + proxy.getInternalId());
+                    log.error("proxy getTwoIndex error:" + JSON.toJSON(proxy));
+                    log.error("", e);
                 }
 
             }

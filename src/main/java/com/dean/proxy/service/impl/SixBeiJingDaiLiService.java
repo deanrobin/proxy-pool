@@ -7,6 +7,7 @@ import com.dean.proxy.bean.Proxy;
 import com.dean.proxy.constant.AnonymityEnum;
 import com.dean.proxy.service.AbstractProxyService;
 import com.dean.proxy.util.IPUtil;
+import com.dean.proxy.util.IntegerUtil;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -28,10 +29,14 @@ public class SixBeiJingDaiLiService extends AbstractProxyService {
         List<Proxy> list = new ArrayList<>();
 
         Document doc = Jsoup.parse(html);
+
         Element table = doc.select("div.footer").first().child(0).child(5);
         Element tbody = table.child(0);
+
+        int count = IntegerUtil.getBigger(COUNT, tbody.children().size());
+
         // 跳过0
-        for (int i = 1; i < COUNT; ++i) {
+        for (int i = 1; i < count; ++i) {
             Element tr = tbody.child(i);
             String ip  = tr.child(0).text();
             Integer port = Integer.valueOf(tr.child(1).text());
