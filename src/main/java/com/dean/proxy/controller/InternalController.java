@@ -31,4 +31,11 @@ public class InternalController {
         //return pcp.size();
         return proxyService.unverifiedCount();
     }
+
+    @RequestMapping("/html")
+    @ResponseBody
+    public String html() {
+        //return pcp.size();
+        return "/html.html";
+    }
 }

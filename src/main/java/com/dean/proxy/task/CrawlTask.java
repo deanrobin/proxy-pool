@@ -1,5 +1,7 @@
 package com.dean.proxy.task;
 
+import java.util.Calendar;
+import java.util.Date;
 import java.util.Map;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.CountDownLatch;
@@ -31,7 +33,7 @@ public class CrawlTask {
     @Autowired
     ProxyPoolContext context;
 
-    @Scheduled(fixedDelay = 10 * 60 * 1000)
+    //@Scheduled(fixedDelay = 3 * 60 * 1000)
     public void crawl() {
         log.info("start crawl task, threadPool core and max is:" + corePoolSize + " ," + maxPoolSize);
 
@@ -67,5 +69,14 @@ public class CrawlTask {
 
         log.info("crawl task over " + System.currentTimeMillis());
         threadPoolExecutor.shutdown();
+    }
+
+    @Scheduled(cron = "0 30 11 ? * 5")
+    public void updateWeekPrice() {
+        log.info("???>>>>>>>");
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(new Date());
+        int DAY_OF_WEEK = calendar.get(Calendar.DAY_OF_WEEK);
+        System.out.println(DAY_OF_WEEK);
     }
 }
